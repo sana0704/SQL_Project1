@@ -1,0 +1,126 @@
+-- CREATING DATABSE NAME HOSPITAL
+create database Hospital;
+
+use Hospital;
+
+-- CREATE TABLE DOCTOR
+create table Doctor(
+id int Primary key,
+name varchar(50),
+email varchar(50),
+specialization varchar(30),
+experience int,
+phone int
+);
+
+alter table Doctor
+modify phone varchar(30) not null;
+
+insert into Doctor (id,name,email,specialization,experience,phone)Values
+(1, 'Dr. Anjali Mehra', 'anjali.mehra@example.com', 'Cardiologist', 12, 9876543210),
+(2, 'Dr. Ramesh Kumar', 'ramesh.kumar@example.com', 'Dermatologist', 8, 9123456789),
+(3, 'Dr. Sneha Roy', 'sneha.roy@example.com', 'Pediatrician', 10, 9812345678),
+(4, 'Dr. Arvind Patel', 'arvind.patel@example.com', 'Orthopedic', 15, 9345678901),
+(5, 'Dr. Meena Singh', 'meena.singh@example.com', 'Neurologist', 7, 9001234567),
+(6, 'Dr. Karan Malhotra', 'karan.malhotra@example.com', 'General Physician', 5, 9988776655);
+
+select * from Doctor;
+
+alter table Doctor
+change column id doctor_id int ;
+
+
+--CREATE TABLE PATIENTS
+create table Patients(
+patient_id int primary key,
+name varchar(30) not null,
+age int ,
+email varchar(20) unique,
+phone varchar(20),
+disease varchar(20) not null,
+gender varchar(10) not null
+);
+
+insert into Patients(patient_id,name,age,email,phone,disease,gender)values
+(201, 'Rahul Sharma', 34, 'rahul.s@example.com', '9811122233', 'Hypertension', 'Male'),
+(202, 'Neha Verma', 28, 'neha.v@example.com', '9822334455', 'Skin Allergy', 'Female'),
+(203, 'Amit Das', 6, 'amit.d@example.com', '9876543200', 'Cold & Fever', 'Male'),
+(204, 'Sita Rani', 67, 'sita.r@example.com', '9898989898', 'Arthritis', 'Female'),
+(205, 'Pooja Nair', 45, 'pooja.n@example.com', '9776655443', 'Migraine', 'Female'),
+(206, 'Rohit Menon', 52, 'rohit.m@example.com', '9123456790', 'Diabetes', 'Male');
+
+-- CREATE TABLE APPOINTMENTS
+
+create table Appointments(
+Appointment_id int primary key,
+appointment_date Date,
+patient_id int,
+doctor_id int,
+foreign key(patient_id) references Patients(patient_id),
+foreign key (doctor_id)references Doctor (doctor_id)
+);
+
+alter table Appointments
+add column purpose varchar(100) not null;
+
+show tables;
+
+insert into Appointments(Appointment_id,appointment_date,patient_id,doctor_id,purpose)values
+(301, '2025-05-18', 201, 1, 'Routine BP Check'),
+(302, '2025-05-19', 202, 2, 'Skin Consultation'),
+(303, '2025-05-18', 203, 3, 'Fever & Cold Treatment'),
+(304, '2025-05-20', 204, 4, 'Joint Pain Follow-up'),
+(305, '2025-05-21', 205, 5, 'Migraine Checkup'),
+(306, '2025-05-19', 206, 6, 'Diabetes Monitoring');
+
+-- OPERATION ON TABLE
+
+select name,specialization from Doctor;
+
+-- Get the names and diseases of all female patients.
+
+select name , disease from patients
+where gender = "female";
+
+-- Show all appointments scheduled on '2025-05-18'.
+
+select appointment_date from appointments
+where appointment_date="2025-05-18";
+
+-- Find the doctor names who have more than 10 years of experience.
+
+select name from Doctor
+where experience > "10";
+
+-- List all patient details who are older than 40.
+
+select * from patients 
+where age > 40;
+
+-- Update Queries
+-- Update Dr. Sneha Roy’s email to 'sneha.new@example.com'
+
+set sql_safe_updates=0;
+update doctor
+set email="sneha.new@example.com"
+where name = "Dr. Sneha Roy";
+select name,email from doctor;
+
+-- Change the disease of patient 'Amit Das' to 'Viral Infection'.
+
+select patient_id from patients
+where name="Amit Das";
+
+update Patients
+set disease = "viral infection"
+where patient_id=203;
+
+select name,disease from patients;
+
+-- Update the purpose of appointment ID 303 to 'Viral Checkup'.
+
+update appointments
+set purpose = "viral checkup"
+where appointment_id=303;
+
+select appointment_id , purpose from appointments;

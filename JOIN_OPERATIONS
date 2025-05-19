@@ -1,0 +1,52 @@
+use hospital;
+
+-- List all appointments with patient name and doctor name.
+
+select 
+p.name as patient_name, 
+d.name as doctor_name, 
+a.Appointment_id ,
+a.appointment_date
+from appointments a
+inner join  patients p on a.patient_id = p.patient_id
+inner join doctor d on a.doctor_id= d.doctor_id;
+
+-- Show the patient's name, gender, and the doctor they are seeing.
+
+select 
+p.name as patient_name,
+p.gender as patient_gender,
+d.name as doctor_name
+-- a.appointment_id 
+from appointments a
+inner join patients p on a.patient_id=p.patient_id
+inner join doctor d on a.doctor_id = d.doctor_id;
+
+-- Find the appointment date, purpose, and doctor specialization.
+
+select 
+a.purpose as purpose_check,
+a.appointment_date as a_date,
+d.specialization as doc_dept
+from appointments a
+inner join doctor d on a.doctor_id=d.doctor_id;
+
+-- List doctors who have at least one appointment.
+
+select distinct
+d.name as doc_name,
+a.appointment_id as ap_id,
+a.appointment_date as ap_date
+from appointments a
+inner join doctor d on a.doctor_id= d.doctor_id
+where a.appointment_date is not null;
+
+--  Get all patients who have booked appointments with 'Dr. Sneha Roy'.
+
+select 
+p.name as p_name,
+d.name as d_name
+from appointments a
+inner join patients p on a.patient_id=p.patient_id
+inner join doctor d on a.doctor_id = d.doctor_id
+where d.name="Dr. Sneha Roy";

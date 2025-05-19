@@ -1,0 +1,29 @@
+ -- Aggregation with JOIN 
+
+ -- Count the total number of male and female patients.
+
+select gender , count(gender)
+from patients
+where gender="female" ;
+
+select gender , count(gender)
+from patients
+where gender="male" ;
+
+select disease , count(*) as t_Count
+from patients
+group by disease;
+
+-- Find the average age of patients.
+   select avg(age) from patients;
+
+-- Get the number of appointments each doctor has.
+select d.name as doctor_name ,
+count(a.appointment_id) as no_of_appointment 
+from doctor d
+left join appointments a
+on d.doctor_id=a.doctor_id
+group by d.doctor_id,d.name;
+
+
+

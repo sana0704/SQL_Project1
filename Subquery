@@ -1,0 +1,58 @@
+#Subquery
+
+--
+use hospital;
+--  Find doctors who have more than 2 appointments.
+
+select name from doctor
+where doctor_id in 
+(select doctor_id from appointments 
+group by doctor_id
+having count(*)>2);
+
+
+-- Get patients who visited the doctor with the most experience.
+select name from patients
+where patient_id in 
+(select patient_id from appointments where doctor_id=
+(select doctor_id from doctor
+order by experience desc
+limit 1));
+
+
+-- Show appointments of patients with 'Fever'.
+select name from patients 
+where patient_id in (select patient_id from appointments where purpose="viral checkup");
+
+-- or
+
+select * from appointments 
+where patient_id = (select patient_id from patients where disease = "Hypertension" );
+
+-- . List doctors who never treated any female patient.
+select * from doctor 
+where doctor_id in (select doctor_id from appointments where patient_id in
+ (select patient_id from patients where gender = "female"));
+ 
+ -- Find patients who had an appointment with a Cardiologist
+ select specialization from doctor;
+ select * from patients 
+ where patient_id in (select patient_id from appointments 
+ where doctor_id  in (select doctor_id from doctor where specialization = "Cardiologist"));
+
+-- Get names of doctors whose patients had 'Diabetes'
+select * from doctor 
+where doctor_id in (select doctor_id from appointments 
+where patient_id = (select patient_id from patients where disease = "Diabetes"));
+
+-- Show patients older than the average patient age.
+select * from patients 
+where age > (select count(age) from patients);
+
+--  List patients who had the most recent appointment.
+
+SELECT name 
+FROM Patients 
+WHERE patient_id IN ( SELECT patient_id FROM Appointments WHERE appointment_date = (SELECT MAX(appointment_date) FROM Appointments)
+);
+ 
